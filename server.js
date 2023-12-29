@@ -1,0 +1,33 @@
+const express=require("express")
+const mongoose=require("mongoose")
+const dotenv=require("dotenv")
+const cors=require("cors")
+const cookieParser=require("cookie-parser")
+dotenv.config()
+const PORT=process.env.PORT
+const app=express()
+const router=require("./src/routers/index")
+const corsOptions={
+    origin: "http://localhost:5173",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+    optionsSuccessStatus: 204
+}
+
+mongoose.connect('mongodb+srv://tammaxdog:TAM1234@testapi.dvlo8yw.mongodb.net/finalPr?retryWrites=true&w=majority')
+.then(()=>{
+    console.log("Connect to database successfully");
+})
+.catch(()=>{
+    console.log("Connect to database false");
+})
+app.use(express.urlencoded({extended:true}))
+app.use(express.json())
+
+app.use(cors(corsOptions))
+
+app.use(cookieParser())
+router(app)
+app.listen(PORT,()=>{
+    console.log("Server listening on port ",PORT);
+})
