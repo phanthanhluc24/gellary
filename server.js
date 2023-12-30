@@ -9,11 +9,11 @@ const app=express()
 const router=require("./src/routers/index")
 const corsOptions={
     origin: "http://localhost:5173",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    // methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
-    optionsSuccessStatus: 204
+    // optionsSuccessStatus: 204
 }
-
+app.use(cookieParser())
 mongoose.connect('mongodb+srv://tammaxdog:TAM1234@testapi.dvlo8yw.mongodb.net/finalPr?retryWrites=true&w=majority')
 .then(()=>{
     console.log("Connect to database successfully");
@@ -26,7 +26,6 @@ app.use(express.json())
 
 app.use(cors(corsOptions))
 
-app.use(cookieParser())
 router(app)
 app.listen(PORT,()=>{
     console.log("Server listening on port ",PORT);
