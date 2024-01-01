@@ -14,18 +14,18 @@ const corsOptions={
     // optionsSuccessStatus: 204
 }
 app.use(cookieParser())
-mongoose.connect('mongodb+srv://tammaxdog:TAM1234@testapi.dvlo8yw.mongodb.net/finalPr?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://lucphan24:Luc1234@gallery.tqvelmf.mongodb.net/gallery?retryWrites=true&w=majority')
 .then(()=>{
     console.log("Connect to database successfully");
 })
 .catch(()=>{
     console.log("Connect to database false");
 })
-app.use(express.urlencoded({extended:true}))
-app.use(express.json())
+app.use(express.urlencoded({extended:true,limit:"10mb"}))
+app.use(express.json({limit:"10mb"}))
 
 app.use(cors(corsOptions))
-
+app.use(express.static("uploads"))
 router(app)
 app.listen(PORT,()=>{
     console.log("Server listening on port ",PORT);

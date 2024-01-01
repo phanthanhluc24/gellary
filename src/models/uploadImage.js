@@ -24,6 +24,9 @@ const imageSchema = new Schema({
         type: String,
         default: "inactive",
     },
+    folder:{
+        type:String
+    }
 }, {
     timestamps: true
 })
