@@ -9,5 +9,8 @@ class UploadImageController{
     async destroy(req,res){
         await UploadImageRepository.destroy(req,res)
     }
+    async imagesTrash(req,res){
+        await UploadImageRepository.imagesTrash(req,res)
+    }
 }
 module.exports=new UploadImageController()
