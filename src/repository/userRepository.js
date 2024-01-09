@@ -28,6 +28,12 @@ class UserRepository {
         await user.save()
         return res.status(201).json({status:201,message:"Reset password successfully"})
     }
+
+    async getUsers(req,res){
+        const userId=req.user.id
+        const users=await UserModel.find({_id:{$ne:userId}})
+        return res.status(201).json(users)
+    }
 }
 
 module.exports = new UserRepository()
