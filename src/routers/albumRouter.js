@@ -13,6 +13,9 @@ const storage = multer.diskStorage({
 const uploadStorage = multer({ storage: storage })
 router.post("/",AlbumController.createAlbum)
 router.post("/upload/:id",uploadStorage.single("image"),AlbumController.uploadImageAlbum)
+router.get("/share-album",AlbumController.getAlbumShare)
 router.get("/:id",AlbumController.imageAlbum)
 router.get("/",AlbumController.albumName)
+router.post("/image-upload/:albumId",AlbumController.uploadImageAlbums)
+router.post("/share/:folder_id",AlbumController.sharedFolder)
 module.exports=router

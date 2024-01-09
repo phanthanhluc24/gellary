@@ -2,6 +2,7 @@ const AlbumModel = require("../models/albumModel")
 const AlbumImageModel = require("../models/albumImageModel.js")
 const cloudinary = require("../utils/cloudinary.js")
 const ImageModel=require("../models/uploadImage")
+const SharedModel=require("../models/sharedFolderModel.js")
 class AlbumRepository {
     async createAlbum(req, res) {
         const userId = req.user.id
@@ -66,6 +67,33 @@ class AlbumRepository {
         }
     }
 
+    async uploadImageAlbums(req,res){
+        const {albumId}=req.params
+        const {imageId}=req.body
+        console.log(imageId);
+        try {
+            const album=await AlbumModel.findById(albumId)
+            if (!album) {
+                return res.status(404).json({status:404,message:"Album not found"})
+            }
+            const albumImage=await AlbumImageModel.insertMany(imageId.map(id=>({image_id:id,album_id:albumId})))
+            return res.status(201).json({ message: 'Images inserted successfully', albumImage });
+        } catch (error) {
+            return res.status(500).json(error)
+        }
+    }
+
+    async sharedFolder(req,res){
+        const sender=req.user.id
+        const {receive_id}=req.body
+        const {folder_id}=req.params
+        try {
+            const shared=await SharedModel.insertMany(receive_id.map(id=>({sender:sender,receive_id:id,folder_id:folder_id})))
+            return res.status(200).json({status:200,message:"Shared folder with someone successfully",data:shared})
+        } catch (error) {
+            return res.status(500).json(error)
+        }
+    }
     async imageAlbum(req, res) {
         const id = req.params.id
         try {
@@ -87,6 +115,16 @@ class AlbumRepository {
         }
     }
 
+    async getAlbumShare(req,res){
+        const userId=req.user.id
+        try {
+            const share=await SharedModel.find({receive_id:userId}).populate("folder_id")
+            const folder=share.map((folder)=>folder.folder_id)
+            return res.status(200).json(folder)
+        } catch (error) {
+            return res.status(500).json(error)
+        }
+    }
 }
 
 module.exports = new AlbumRepository()

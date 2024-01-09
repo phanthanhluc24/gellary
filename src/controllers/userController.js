@@ -7,5 +7,9 @@ class UserController{
     async resetPassword(req,res){
         await UserRepository.resetPassword(req,res)
     }
+
+    async getUsers(req,res){
+        await UserRepository.getUsers(req,res)
+    }
 }
 module.exports=new UserController()
